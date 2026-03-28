@@ -1,5 +1,5 @@
 ## Status
-Next.js scaffolded. Prisma + Prisma Postgres connected. User and VaultEntry models created and pushed to DB. Starting Work Journal UI next.
+Route structure for Work Journal created under `app/dashboard/vault/`. Prisma client fixed for new driver adapter pattern. Ready to build journal UI components and wire up data fetching.
 
 ## Key Decisions
 - pgvector in Prisma Postgres for semantic search (RAG on bullet_bank)
@@ -14,6 +14,17 @@ Next.js scaffolded. Prisma + Prisma Postgres connected. User and VaultEntry mode
 - CI/CD after tests are in place; Vercel gives CD for free
 - SQL-first learning: write raw SQL before Prisma equivalent
 - `prisma db push` for prototyping, `prisma migrate dev` for production
+- Routes under `app/dashboard/` (not top-level) — shared dashboard layout for nav, auth guard across all features
+- Prisma 6+ `prisma-client` generator with `@prisma/adapter-pg` (not `prisma-client-js`) — future-proof driver adapter pattern
+
+## Session 3 Accomplishments (2026-03-25)
+- Created `app/dashboard/layout.tsx` — shared dashboard shell
+- Created `app/dashboard/vault/layout.tsx` — master-detail sidebar layout
+- Created `app/dashboard/vault/page.tsx` — default "no entry selected" view
+- Created `app/dashboard/vault/[id]/page.tsx` — dynamic entry page
+- Fixed Prisma client: switched to `@prisma/adapter-pg` + `PrismaPg` (new generator requires explicit adapter, not auto-read DATABASE_URL)
+- Added `pg` and `@prisma/adapter-pg` dependencies
+- Build passes clean
 
 ## Session 2 Accomplishments (2026-03-24)
 - Scaffolded Next.js app (TypeScript, Tailwind, App Router, ESLint)
@@ -29,11 +40,12 @@ Next.js scaffolded. Prisma + Prisma Postgres connected. User and VaultEntry mode
 - auto_applier_logic.md — Playwright HITL flow + extension auth
 
 ## Next Steps
-1. Create journal route folder structure: app/journal/layout.tsx, page.tsx, [id]/page.tsx
-2. Build Work Journal UI (sidebar + entry view from design)
-3. Server actions for CRUD (create, read, update, delete entries)
-4. Configure Auth.js with credentials provider
-5. Set up Vitest + write tests for Work Journal
+1. Seed test data (or build "create entry" form first) — decision needed
+2. Build sidebar component: fetch vault entries, render list, "New Entry" button
+3. Build entry detail view: display content for selected entry
+4. Server actions for CRUD (create, read, update, delete entries)
+5. Configure Auth.js with credentials provider
+6. Set up Vitest + write tests for Work Journal
 
 ## Open Questions
 - None currently
